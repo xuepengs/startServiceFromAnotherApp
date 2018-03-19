@@ -39,4 +39,16 @@
         android:layout_height="wrap_content"
         android:text="停止外部服务" />
 
+    <EditText
+        android:id="@+id/etInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="这是另一个应用中的数据" />
+
+    <Button
+        android:id="@+id/btnSync"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="同步数据到绑定的服务中" />
+
 </LinearLayout>
