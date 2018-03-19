@@ -1,12 +1,15 @@
 package com.example.anotherapp;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
     private Intent serviceIntent;
 
     @Override
@@ -17,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         findViewById(R.id.btnStartService).setOnClickListener(this);
         findViewById(R.id.btnStopService).setOnClickListener(this);
+        findViewById(R.id.btnBindService).setOnClickListener(this);
+        findViewById(R.id.btnUnbindService).setOnClickListener(this);
     }
 
     @Override
@@ -30,7 +35,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnStopService:
                 stopService(serviceIntent);
                 break;
+            case R.id.btnBindService:
+                bindService(serviceIntent,this, Context.BIND_AUTO_CREATE);
+
+                break;
+
+            case R.id.btnUnbindService:
+                unbindService(this);
+                break;
         }
+
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        System.out.println("service connected");
+        System.out.println(iBinder);
+
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
 
     }
 }
