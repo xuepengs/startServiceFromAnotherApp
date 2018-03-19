@@ -10,22 +10,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.xuepeng.startservicefromanotherapp.IAppServiceInterfaceRemoteBinder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceConnection {
     private Intent serviceIntent;
-    private EditText etInput;
+    private EditText editText;
+    private TextView textView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        etInput=findViewById(R.id.etInput);
+
+        setContentView(R.layout.activity_main);
+        editText=(EditText) findViewById(R.id.etInput);
+        textView=findViewById(R.id.textView);
         serviceIntent = new Intent();
         serviceIntent.setComponent(new ComponentName("com.example.xuepeng.startservicefromanotherapp","com.example.xuepeng.startservicefromanotherapp.AppService"));
 
-        setContentView(R.layout.activity_main);
         findViewById(R.id.btnStartService).setOnClickListener(this);
         findViewById(R.id.btnStopService).setOnClickListener(this);
         findViewById(R.id.btnBindService).setOnClickListener(this);
@@ -56,13 +60,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btnSync:
                 if(binder!=null) {
+                    //System.out.println(editText.getText().toString());
+
                     try {
-                        binder.setData(etInput.getText().toString());
+                        binder.setData(editText.getText().toString());
+                        textView.setText(editText.getText().toString());
                     } catch (RemoteException e) {
                         e.printStackTrace();
-                        System.out.println("异常");
                     }
-                }
+               }
                 break;
 
         }
@@ -74,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("service connected");
         System.out.println(iBinder);
         binder= IAppServiceInterfaceRemoteBinder.Stub.asInterface(iBinder);
+        System.out.println(binder);
 
     }
 
